@@ -27,6 +27,9 @@ public class Harness {
   private static final String CALLBACK_CLASSPATH_PROPERTY = "dacapo.callback.classpath";
 
   public static void main(String[] args){
+
+    logTime(ProfileKey.MAIN_CALLED);
+
     try {
       ClassLoader harnessClassLoader = makeHarnessClassLoader();
 
@@ -38,9 +41,12 @@ public class Harness {
 
       harnessMain.invoke(null, new Object[]{args});
 
+      logTime(ProfileKey.MAIN_EXITING);
+
       System.exit(0);
     }catch (Exception e){
       e.printStackTrace();
+      logTime(ProfileKey.MAIN_EXITING);
       System.exit(-1);
     }
   }
@@ -72,4 +78,24 @@ public class Harness {
 
     return URLClassLoader.newInstance(urls, classLoader);
   }
+
+  private enum ProfileKey {
+
+    AGENT_CALLED,
+    AGENT_EXITING,
+    FILE_TRANSFORMER_CALLED,
+    FILE_TRANSFORMER_EXITING,
+    MAIN_CALLED,
+    MAIN_EXITING,
+    ;
+
+  } 
+
+  private static void logTime(ProfileKey key) {
+
+    long time = System.currentTimeMillis();
+
+    System.out.println("[PROFILING]" + " " + key + " " + time);
+    
+}
 }

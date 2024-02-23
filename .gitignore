@@ -69,3 +69,5 @@ benchmarks/run.sh
 
 benchmarks/META-INF/
 benchmarks/bms/tradebeans/outdat/
+
+tools/analysis
